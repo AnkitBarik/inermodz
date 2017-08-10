@@ -3,15 +3,17 @@
 
 from pylab import *
 
-class Grid:
+class grid:
     
     def __init__(self,nr = 65, np = 512, nt = 256):
         
         ri = 0.; ro = 1;
 
+        dt = pi/nt
+
         self.r = linspace(ri,ro,nr)
         self.phi = linspace(0.,2*pi,np)
-        self.theta = linspace(0.,pi,nt)
+        self.theta = linspace(dt,pi-dt,nt)
         
         self.r3D = zeros([np,nt,nr])
         self.th3D = zeros([np,nt,nr])
