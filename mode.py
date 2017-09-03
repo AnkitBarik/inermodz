@@ -10,10 +10,10 @@ from mpl_toolkits.basemap import Basemap
 
 class inerMod:
 
-    def __init__(self,nr=33,np=256,nt=128,m=0,N=0,n=0,symm='es'):
+    def __init__(self,nr=33,np=256,nt=128,m=0,l=None,N=0,n=0,symm='es'):
 
-        self.sig_arr = sigma(m=m,N=N,symm=symm)
-        self.U = vel(m=m,N=N,n=n,nr=nr,np=np,nt=nt,symm=symm)
+        self.sig_arr = sigma(m=m,l=l,N=N,symm=symm)
+        self.U = vel(m=m,l=l,N=N,n=n,nr=nr,np=np,nt=nt,symm=symm)
         self.grid = grid(nr=nr,np=np,nt=nt)
 
 

@@ -11,6 +11,7 @@ class vel:
     def __init__(self,m=0,N=0,n=1,l=None,nr=33,np=256,nt=128,symm='es'):
 
         n = n-1   # The definition of n starts from 1 :(
+        N = (l - m - ((l-m)%2))/2
 
         self.grid = grid(nr=nr,np=np,nt=nt)
         self.Us = zeros([np,nt,nr])
@@ -18,10 +19,11 @@ class vel:
         self.Uz = zeros([np,nt,nr])
 
         sig_arr = sigma(m=m,N=N,l=l,symm=symm)
-        print 'sigma =',sig_arr
+        print 'omega =',sig_arr*2
         sig = sig_arr[n]
 
-        print 'sigma(N,n,m) =',sig
+        print 'omega(%d,%d,%d) = %.4f' %(l,m,n+1,sig*2)
+
 
         if l is not None:
 			if (l-m)%2 == 0:
@@ -43,6 +45,7 @@ class vel:
                                 self.grid.s3D**(m+2*j) * self.grid.z3D**(2*i-1)
 
                         self.Uz = self.Uz + UTemp
+
 
                     UTemp = C * sig**(2*i) * (1-sig**2)**(j-1) * (m + m*sig + 2*j*sig)\
                             * self.grid.s3D**(m+2*j-1) * self.grid.z3D**(2*i)
