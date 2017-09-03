@@ -22,11 +22,13 @@ class grid:
         for i in range(nr):
             self.r3D[:,:,i] = self.r[i]
                   
-        for j in range(nr):
+        for j in range(nt):
             self.th3D[:,j,:] = self.theta[j]
 
-        for k in range(nr):
+        for k in range(np):
             self.phi3D[k,:,:] = self.phi[k]
 
         self.s3D = self.r3D*sin(self.th3D) 
         self.z3D = self.r3D*cos(self.th3D)
+        self.x3D = self.s3D*cos(self.phi3D)
+        self.y3D = self.s3D*sin(self.phi3D)

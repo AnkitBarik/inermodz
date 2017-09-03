@@ -23,5 +23,13 @@ def dfactorial(n):
 
 def find_rad(r,rPlot):
 #                rPlot /= (1-self.radratio)
-    Idx = where(abs(r - rPlot) == min(abs(r - rPlot)))
+    Idx = where(abs(r - rPlot) == min(abs(r - rPlot)))[0][0]
     return Idx
+
+def find_phi(phi,phiPlot):
+   
+    phiPlot = deg2rad(phiPlot) 
+    Idx = where(abs(phi - phiPlot) == min(abs(phi - phiPlot)))[0][0]
+    return Idx
+
+
