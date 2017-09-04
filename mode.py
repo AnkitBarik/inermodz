@@ -10,14 +10,14 @@ from mpl_toolkits.basemap import Basemap
 
 class inerMod:
 
-    def __init__(self,nr=33,np=256,nt=128,m=0,l=None,N=0,n=0,symm='es'):
+    def __init__(self,nr=33,np=256,nt=128,m=0,l=None,N=0,n=0,symm='es',norm=False):
 
         self.sig_arr = sigma(m=m,l=l,N=N,symm=symm)
-        self.U = vel(m=m,l=l,N=N,n=n,nr=nr,np=np,nt=nt,symm=symm)
+        self.U = vel(m=m,l=l,N=N,n=n,nr=nr,np=np,nt=nt,symm=symm,norm=norm)
         self.grid = grid(nr=nr,np=np,nt=nt)
 
 
-    def surf(self,field='us',r=0.5,cm='seismic',levels=100,proj='hammer'):
+    def surf(self,field='us',r=0.5,cm='seismic',levels=100,vec=False,vecStride=5,vecWidth=2e-3,vecScale=1e2,proj='hammer'):
          
         th = pi/2 - self.grid.theta
         phi = pi - self.grid.phi
@@ -50,6 +50,16 @@ class inerMod:
             data = self.U.Uz[:,:,idxPlot]
 
         contourf(x,y,data,levels,cmap=cm)
+
+        if vec:
+            ut = self.U.Us*cos(self.grid.th3D) - self.U.Uz*sin(self.grid.th3D)
+            ut = ut[::vecStride,::vecStride,idxPlot]
+            up = self.U.Up[::vecStride,::vecStride,idxPlot]
+            lon = lon[::vecStride,::vecStride]
+            lat = lat[::vecStride,::vecStride]
+            uprot,utrot,x,y = m.rotate_vector(up,ut,lon,lat,returnxy=True)
+            quiver(x,y,up,ut,width=vecWidth,scale=vecScale)
+
         axis('off')
 
         show()

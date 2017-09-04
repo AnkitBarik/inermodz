@@ -8,7 +8,7 @@ from grid import grid
 
 class vel:
 
-    def __init__(self,m=0,N=0,n=1,l=None,nr=33,np=256,nt=128,symm='es'):
+    def __init__(self,m=0,N=0,n=1,l=None,nr=33,np=256,nt=128,symm='es',norm=False):
 
         n = n-1   # The definition of n starts from 1 :(
         N = (l - m - ((l-m)%2))/2
@@ -98,3 +98,15 @@ class vel:
             self.Up = self.Up * cos(m*self.grid.phi3D)
 
             del UTemp
+
+        if norm:
+            U2 = self.Us**2 + self.Up**2 + self.Uz**2
+            U2p = trapz(U2, x=self.grid.phi, axis=0)
+            U2t = trapz(U2p, self.grid.theta, axis=0)
+            U2r = trapz(U2t, self.grid.r, axis=0)
+            Vol = 4./3. * pi * (self.grid.r.max()**3 - self.grid.r.min()**3)
+            U2r /= Vol
+
+            self.Us /= sqrt(U2r)
+            self.Up /= sqrt(U2r)
+            self.Uz /= sqrt(U2r)
