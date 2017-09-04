@@ -10,11 +10,16 @@ from mpl_toolkits.basemap import Basemap
 
 class inerMod:
 
-    def __init__(self,nr=33,np=256,nt=128,m=0,l=None,N=0,n=0,symm='es',norm=False):
+    def __init__(self,nr=33,np=256,nt=128,m=0,l=None,N=0,n=1,symm='es',norm=False):
 
         self.sig_arr = sigma(m=m,l=l,N=N,symm=symm)
         self.U = vel(m=m,l=l,N=N,n=n,nr=nr,np=np,nt=nt,symm=symm,norm=norm)
         self.grid = grid(nr=nr,np=np,nt=nt)
+        self.l = l
+        self.m = m
+        self.N = N
+        self.n = n
+        self.omega = self.sig_arr[n-1]*2
 
 
     def surf(self,field='us',r=0.5,cm='seismic',levels=100,vec=False,vecStride=5,vecWidth=2e-3,vecScale=1e2,proj='hammer'):
