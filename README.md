@@ -8,3 +8,5 @@ Python routines to compute and display inertial modes of a full sphere according
 * ```vel``` : This is the velocity class. Provides the three velocity components of a mode. Contains the subclass ```grid```.
 
 * ```grid``` : This provides access to the grid variables $(r,\theta,\phi,s,z)$, including 3D ones.
+
+* ```sigma```: This provides the half-frequencies for a single mode defined by (`l`,`m`,`N`).
