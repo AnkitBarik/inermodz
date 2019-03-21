@@ -56,17 +56,24 @@ def sigma(m=0,N=0,l=None,symm='es'):
 
     return sig
 
-def get_mode_sigma(om = 0.,m=2,Nmax=4,symm='es'):
+def get_mode_sigma(om = 0.,m=2,Nmax=4,symm='es',info='lm'):
 
         sig = om/2.
         if (symm=='es' or symm=='ES'):
             for N in range(1,Nmax+1):
+                l = 2*N + m
                 sig_test = sigma(m = m,N = N,symm=symm)
                 idx = where(abs(sig - sig_test) == min(abs(sig - sig_test)))[0][0]
-                print "m=",m,"N=",N,"n=",idx+1,"om=",sig_test[idx]*2
+                if info == 'lm':
+                    print "(l,m) = (%d,%d)  om = %f" %(l,m,sig_test[idx]*2)
+                elif info == 'all':
+                    print "m = %d, l = %d, N = %d, n = %d, om = %f" %(m,l,N,idx+1,sig_test[idx]*2)
         elif (symm=='ea' or symm=='EA'):
             for N in range(Nmax+1):
+                l = 2*N + m + 1
                 sig_test = sigma(m = m,N = N,symm=symm)
                 idx = where(abs(sig - sig_test) == min(abs(sig - sig_test)))[0][0]
-                print "m=",m,"N=",N,"n=",idx+1,"om=",sig_test[idx]*2
-
+                if info == 'lm':
+                    print "(l,m) = (%d,%d)  om = %f" %(l,m,sig_test[idx]*2)
+                elif info == 'all':
+                    print "m = %d, l = %d, N = %d, n = %d, om = %f" %(m,l,N,idx+1,sig_test[idx]*2)
