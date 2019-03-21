@@ -5,7 +5,7 @@ from pylab import *
 from velocity import *
 from sigma import *
 from grid import *
-from libzhang import find_rad
+from libzhang import _find_rad,_find_phi
 from mpl_toolkits.basemap import Basemap
 
 class inerMod:
@@ -39,7 +39,7 @@ class inerMod:
 
         rPlot = 1.
 
-        idxPlot = find_rad(self.grid.r,r)
+        idxPlot = _find_rad(self.grid.r,r)
 
         figure(figsize=(12,6))
 
@@ -76,7 +76,7 @@ class inerMod:
         xx = rr*sin(tth)
         yy = rr*cos(tth)
 
-        idxPlot = find_phi(self.grid.phi,phi)
+        idxPlot = _find_phi(self.grid.phi,phi)
 
         figure(figsize=(5,10))
 
