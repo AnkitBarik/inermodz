@@ -12,12 +12,11 @@ class inerMod:
 
     def __init__(self,nr=33,np=256,nt=128,m=0,l=None,N=0,n=1,symm='es',norm=False):
 
-        self.sig_arr = sigma(m=m,l=l,N=N,symm=symm)
+        self.sig_arr, self.N = sigma(m=m,l=l,N=N,symm=symm)
         self.U = vel(m=m,l=l,N=N,n=n,nr=nr,np=np,nt=nt,symm=symm,norm=norm)
         self.grid = grid(nr=nr,np=np,nt=nt)
         self.l = l
         self.m = m
-        self.N = N
         self.n = n
         self.omega = self.sig_arr[n-1]*2
 

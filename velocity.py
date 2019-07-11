@@ -11,14 +11,14 @@ class vel:
     def __init__(self,m=0,N=0,n=1,l=None,nr=33,np=256,nt=128,symm='es',norm=False):
 
         n = n-1   # The definition of n starts from 1 :(
-        N = (l - m - ((l-m)%2))/2
+#        N = (l - m - ((l-m)%2))/2
 
         self.grid = grid(nr=nr,np=np,nt=nt)
         self.Us = zeros([np,nt,nr])
         self.Up = zeros([np,nt,nr])
         self.Uz = zeros([np,nt,nr])
 
-        sig_arr = sigma(m=m,N=N,l=l,symm=symm)
+        sig_arr,N = sigma(m=m,N=N,l=l,symm=symm)
         print 'omega =',sig_arr*2
         sig = sig_arr[n]
 
