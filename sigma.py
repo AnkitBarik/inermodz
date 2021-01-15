@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: iso-8859-15 -*-
 
-from pylab import *
+import numpy as np
 from .libzhang import factorial
 
 def sigma(m=0,N=0,l=None,symm='es'):
@@ -15,7 +15,7 @@ def sigma(m=0,N=0,l=None,symm='es'):
 
     if symm == 'es' or symm == 'ES':
 
-        p = zeros(2*N+1)
+        p = np.zeros(2*N+1)
 
         fac = factorial(2*(2*N+m))/( factorial(2*N+m) * factorial(2*N) )
 
@@ -33,11 +33,11 @@ def sigma(m=0,N=0,l=None,symm='es'):
                 p[2*j] = fac * (m + 2*N - 2*j)
                 p[2*j + 1] = -fac * 2 * (N-j)
 
-        sig = roots(p)
+        sig = np.roots(p)
 
     if symm == 'ea' or symm == 'EA':
 
-        p = zeros(2*N+2)
+        p = np.zeros(2*N+2)
 
         fac = factorial(2*(2*N+m+1))/( factorial(2*N+m+1) * factorial(2*N+1 ) )
 
@@ -52,7 +52,7 @@ def sigma(m=0,N=0,l=None,symm='es'):
             p[2*j] = fac * (m + 2*N - 2*j + 1)
             p[2*j+1] = -fac * (2*N - 2*j + 1)
 
-        sig = roots(p)
+        sig = np.roots(p)
 
     return sig, N
 

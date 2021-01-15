@@ -22,7 +22,7 @@ class inerMod:
         self.omega = self.sig_arr[n-1]*2
 
 
-    def surf(self,field='us',r=0.5,cm='RdBu_r',levels=60,grid=False):
+    def surf(self,field='us',r=0.5,cm='RdBu_r',levels=60,grid=False,proj="ortho"):
 
         idxPlot = _find_rad(self.grid.r,r)
 
@@ -37,7 +37,7 @@ class inerMod:
         if field == 'uz':
             data = self.U.Uz[:,:,idxPlot]
 
-        radContour(self.grid.theta,self.grid.phi,data,grid,levels,cm)
+        radContour(self.grid.theta,self.grid.phi,data,grid,levels,cm,proj)
 
         plt.show()
 
