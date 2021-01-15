@@ -69,7 +69,9 @@ def radContour(theta,phi,data,grid,levels,cm,proj):
 #            #ax.quiver(lon,lat,up,ut,transform=plotcrs,width=vecWidth,scale=vecScale,regrid_shape=20)
 #            ax.quiver(lon,lat,up,ut,transform=plotcrs)#,regrid_shape=regrid_shape)
 
+    plt.axis('equal')
     plt.axis('off')
+    plt.tight_layout()
 
 def merContour(r,theta,data,levels,cm):
 
@@ -85,7 +87,37 @@ def merContour(r,theta,data,levels,cm):
 
     cont = plt.contourf(xx,yy,data,levels,cmap=cm,norm=divnorm)
 
+    plt.plot(r[0]*np.sin(theta),r[0]*np.cos(theta),'k',lw=1)
+    plt.plot(r[-1]*np.sin(theta),r[-1]*np.cos(theta),'k',lw=1)
+    plt.plot([0,0], [ r.min(),r.max() ], 'k', lw=1)
+    plt.plot([0,0], [ -r.max(),-r.min() ], 'k', lw=1)
+
     for c in cont.collections:
         c.set_edgecolor("face")
 
+    plt.axis('equal')
     plt.axis('off')
+    plt.tight_layout()
+
+def eqContour(r,phi,data,levels,cm):
+
+    phi2D, r2D = np.meshgrid(phi,r,indexing='ij')
+    xx = r2D * np.cos(phi2D)
+    yy = r2D * np.sin(phi2D)
+
+    plt.figure(figsize=(10,10))
+
+    datMax = (np.abs(data)).max()
+    divnorm = colors.TwoSlopeNorm(vmin=-datMax, vcenter=0, vmax=datMax)
+    cont = plt.contourf(xx,yy,data,levels,cmap=cm,norm=divnorm)
+
+    plt.plot(r[0]*np.cos(phi), r[0]*np.sin(phi),'k',lw=1)
+    plt.plot(r[-1]*np.cos(phi), r[-1]*np.sin(phi),'k',lw=1)
+
+    for c in cont.collections:
+        c.set_edgecolor("face")
+
+    plt.axis('equal')
+    plt.axis('off')
+    plt.tight_layout()
+

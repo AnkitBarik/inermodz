@@ -58,3 +58,21 @@ class inerMod:
 
         merContour(self.grid.r,self.grid.theta,data,levels,cm)
         plt.show()
+
+    def equat(self, field='us',cm='seismic',levels=60):
+        
+        field = field.lower()
+
+        half = int(self.grid.ntheta/2)
+
+        if field == 'us':
+            data = self.U.Us[:,half,:]
+
+        if field == 'up':
+            data = self.U.Up[:,half,:]
+
+        if field == 'uz':
+            data = self.U.Uz[:,half,:]
+
+        eqContour(self.grid.r,self.grid.phi,data,levels,cm)
+        plt.show()

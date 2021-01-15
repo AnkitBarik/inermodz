@@ -8,6 +8,10 @@ class grid:
     def __init__(self,nr = 65, nphi = 512, ntheta = 256):
 
         ri = 0.; ro = 1;
+    
+        self.nr    = nr
+        self.ntheta= ntheta
+        self.nphi  = nphi
 
         self.r     = np.linspace(ri,ro,nr)
         self.phi   = np.linspace(0.,2*np.pi,nphi)
