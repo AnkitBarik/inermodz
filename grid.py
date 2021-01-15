@@ -1,34 +1,32 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: iso-8859-15 -*-
 
-from pylab import *
+import numpy as np
 
 class grid:
-    
-    def __init__(self,nr = 65, np = 512, nt = 256):
-        
+
+    def __init__(self,nr = 65, nphi = 512, ntheta = 256):
+
         ri = 0.; ro = 1;
 
-        dt = pi/nt
+        self.r     = np.linspace(ri,ro,nr)
+        self.phi   = np.linspace(0.,2*np.pi,nphi)
+        self.theta = np.linspace(0.,np.pi,ntheta)
 
-        self.r = linspace(ri,ro,nr)
-        self.phi = linspace(0.,2*pi,np)
-        self.theta = linspace(dt,pi-dt,nt)
-        
-        self.r3D = zeros([np,nt,nr])
-        self.th3D = zeros([np,nt,nr])
-        self.phi3D = zeros([np,nt,nr])
+        self.r3D   = np.zeros([nphi,ntheta,nr])
+        self.th3D  = np.zeros([nphi,ntheta,nr])
+        self.phi3D = np.zeros([nphi,ntheta,nr])
 
         for i in range(nr):
             self.r3D[:,:,i] = self.r[i]
-                  
-        for j in range(nt):
+
+        for j in range(ntheta):
             self.th3D[:,j,:] = self.theta[j]
 
-        for k in range(np):
+        for k in range(nphi):
             self.phi3D[k,:,:] = self.phi[k]
 
-        self.s3D = self.r3D*sin(self.th3D) 
-        self.z3D = self.r3D*cos(self.th3D)
-        self.x3D = self.s3D*cos(self.phi3D)
-        self.y3D = self.s3D*sin(self.phi3D)
+        self.s3D = self.r3D*np.sin(self.th3D)
+        self.z3D = self.r3D*np.cos(self.th3D)
+        self.x3D = self.s3D*np.cos(self.phi3D)
+        self.y3D = self.s3D*np.sin(self.phi3D)
