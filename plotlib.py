@@ -49,13 +49,13 @@ def radContour(theta,phi,data,grid,levels,cm,proj):
 
     if proj == "ortho":
         cont = ax.pcolormesh(lon,lat,data, \
-                           transform=ccrs.PlateCarree(),cmap='RdBu_r', \
+                           transform=ccrs.PlateCarree(),cmap=cm, \
                            norm=divnorm)
     elif proj == "moll":
         cont = ax.contourf(lon,lat,data,levels, \
-                           transform=ccrs.PlateCarree(),cmap='RdBu_r', \
+                           transform=ccrs.PlateCarree(),cmap=cm, \
                            norm=divnorm)
-        
+
 
         for c in cont.collections:
             c.set_edgecolor("face")
@@ -121,3 +121,9 @@ def eqContour(r,phi,data,levels,cm):
     plt.axis('off')
     plt.tight_layout()
 
+def iso3D(x,y,z,dat,fc=0.2):
+
+    import mayavi.mlab as mlab
+    datMax = np.abs(dat).max()
+    mlab.contour3d(x,y,z,dat,contours=[-fc*datMax,fc*datMax],colormap='blue-red')
+    mlab.show()

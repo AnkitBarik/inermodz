@@ -60,7 +60,7 @@ class inerMod:
         plt.show()
 
     def equat(self, field='us',cm='seismic',levels=60):
-        
+
         field = field.lower()
 
         half = int(self.grid.ntheta/2)
@@ -76,3 +76,6 @@ class inerMod:
 
         eqContour(self.grid.r,self.grid.phi,data,levels,cm)
         plt.show()
+
+    def isosurf(self,field='us',levels=4):
+        iso3D(self.grid.x3D,self.grid.y3D,self.grid.z3D,self.U.Up)
