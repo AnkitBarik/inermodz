@@ -61,6 +61,8 @@ class vel:
             self.Us = self.Us  * np.sin(m*self.grid.phi3D)
             self.Uz = -self.Uz * np.sin(m*self.grid.phi3D)
             self.Up = self.Up  * np.cos(m*self.grid.phi3D)
+            self.Ux = self.Us * np.cos(self.grid.phi3D) - self.Up * np.sin(self.grid.phi3D)
+            self.Uy = self.Us * np.sin(self.grid.phi3D) + self.Up * np.cos(self.grid.phi3D)
 
 
         if (symm == 'ea') or (symm == 'EA'):
@@ -96,8 +98,11 @@ class vel:
             self.Us = self.Us  * np.sin(m*self.grid.phi3D)
             self.Uz = -self.Uz * np.sin(m*self.grid.phi3D)
             self.Up = self.Up  * np.cos(m*self.grid.phi3D)
+            self.Ux = self.Us * np.cos(self.grid.phi3D) - self.Up * np.sin(self.grid.phi3D)
+            self.Uy = self.Us * np.sin(self.grid.phi3D) + self.Up * np.cos(self.grid.phi3D)
 
             del UTemp
+
 
         if norm:
             U2 = self.Us**2 + self.Up**2 + self.Uz**2

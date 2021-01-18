@@ -22,22 +22,28 @@ class inerMod:
         self.omega = self.sig_arr[n-1]*2
 
 
-    def surf(self,field='us',r=0.5,cm='RdBu_r',levels=60,grid=False,proj="ortho"):
+    def surf(self,field='us',r=0.5,cm='RdBu_r',levels=60,grid=False,mode="2D",proj="ortho",quivfac=0.02):
 
         idxPlot = _find_rad(self.grid.r,r)
 
         field = field.lower()
 
         if field == 'us':
-            data = self.U.Us[:,:,idxPlot]
+            data = self.U.Us
 
         if field == 'up':
-            data = self.U.Up[:,:,idxPlot]
+            data = self.U.Up
 
         if field == 'uz':
-            data = self.U.Uz[:,:,idxPlot]
+            data = self.U.Uz
 
-        radContour(self.grid.theta,self.grid.phi,data,grid,levels,cm,proj)
+        if mode == "2D":
+            radContour(self.grid.theta,self.grid.phi,data,grid,levels,cm,proj)
+        elif mode == "3D":
+            surface3D(self.grid.x3D,self.grid.y3D,self.grid.z3D,idxPlot,
+                      self.U.Ux,self.U.Uy,self.U.Uz,data,cm='RdBu',quiv=True,fac=quivfac)
+        else:
+            print("mode must be 2D or 3D")
 
         plt.show()
 
@@ -76,6 +82,3 @@ class inerMod:
 
         eqContour(self.grid.r,self.grid.phi,data,levels,cm)
         plt.show()
-
-    def isosurf(self,field='us',levels=4):
-        iso3D(self.grid.x3D,self.grid.y3D,self.grid.z3D,self.U.Up)

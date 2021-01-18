@@ -121,9 +121,14 @@ def eqContour(r,phi,data,levels,cm):
     plt.axis('off')
     plt.tight_layout()
 
-def iso3D(x,y,z,dat,fc=0.2):
+def surface3D(x,y,z,idx,ux,uy,uz,dat,cm='RdBu',quiv=True,fac=0.02):
 
-    import mayavi.mlab as mlab
-    datMax = np.abs(dat).max()
-    mlab.contour3d(x,y,z,dat,contours=[-fc*datMax,fc*datMax],colormap='blue-red')
+    from mayavi import mlab
+
+    col = (0.43,0.43,0.43)
+    mlab.figure(size=(800,800))
+    mesh_handle = mlab.mesh(x[...,idx],y[...,idx],z[...,idx],scalars=dat[...,idx],colormap=cm)
+    mesh_handle.module_manager.scalar_lut_manager.reverse_lut = True
+    if quiv:
+        mlab.quiver3d(x,y,z,ux,uy,uz,color=col,scale_mode='vector',mode='arrow',mask_points=4,scale_factor=fac)
     mlab.show()
