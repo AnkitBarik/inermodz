@@ -121,7 +121,7 @@ def eqContour(r,phi,data,levels,cm):
     plt.axis('off')
     plt.tight_layout()
 
-def surface3D(x,y,z,idx,ux,uy,uz,dat,cm='RdBu',quiv=True,fac=0.02):
+def surface3D(x,y,z,idx,ux,uy,uz,dat,cm='RdBu',quiv=True,fac=0.01):
 
     from mayavi import mlab
 

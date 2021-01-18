@@ -22,7 +22,7 @@ class inerMod:
         self.omega = self.sig_arr[n-1]*2
 
 
-    def surf(self,field='us',r=0.5,cm='RdBu_r',levels=60,grid=False,mode="2D",proj="ortho",quivfac=0.02):
+    def surf(self,field='us',r=0.5,cm='RdBu_r',levels=60,grid=False,mode="2D",proj="ortho",quivfac=0.01):
 
         idxPlot = _find_rad(self.grid.r,r)
 
