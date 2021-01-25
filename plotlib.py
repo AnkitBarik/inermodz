@@ -85,7 +85,6 @@ def merContour(r,theta,data,levels,cm):
     plt.figure(figsize=(5,10))
 
     datMax = (np.abs(data)).max()
-    print(datMax)
     divnorm = colors.TwoSlopeNorm(vmin=-datMax, vcenter=0, vmax=datMax)
 
     cont = plt.contourf(xx,yy,data,levels,cmap=cm,norm=divnorm)
@@ -124,9 +123,11 @@ def eqContour(r,phi,data,levels,cm):
     plt.axis('off')
     plt.tight_layout()
 
-def surface3D(x,y,z,idx,ux,uy,uz,dat,cm='RdBu',quiv=True,fac=0.01,col=True):
+def surface3D(x,y,z,idx,ux,uy,uz,dat,cm='seismic',quiv=True,fac=0.01,col=True):
 
     from mayavi import mlab
+
+    lut=eval('plt.cm.'+cm+'(np.linspace(0,1,255))*255')
    
     if col: 
         col = (0.43,0.43,0.43)
@@ -134,7 +135,9 @@ def surface3D(x,y,z,idx,ux,uy,uz,dat,cm='RdBu',quiv=True,fac=0.01,col=True):
         col = None
     mlab.figure(size=(800,800))
     mesh_handle = mlab.mesh(x[...,idx],y[...,idx],z[...,idx],scalars=dat[...,idx],colormap=cm)
-    mesh_handle.module_manager.scalar_lut_manager.reverse_lut = True
+    mesh_handle.module_manager.scalar_lut_manager.lut.table = lut
+#    mesh_handle.module_manager.scalar_lut_manager.reverse_lut = True
     if quiv:
         mlab.quiver3d(x,y,z,ux,uy,uz,color=col,scale_mode='vector',mode='arrow',mask_points=4,scale_factor=fac)
     #mlab.show()
+    mlab.draw()

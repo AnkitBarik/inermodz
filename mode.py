@@ -41,7 +41,7 @@ class inerMod:
             radContour(self.grid.theta,self.grid.phi,data,idxPlot,grid,levels,cm,proj)
         elif mode == "3D":
             surface3D(self.grid.x3D,self.grid.y3D,self.grid.z3D,idxPlot,
-                      self.U.Ux,self.U.Uy,self.U.Uz,data,cm='RdBu',quiv=True,fac=quivfac,col=col)
+                      self.U.Ux,self.U.Uy,self.U.Uz,data,cm=cm,quiv=True,fac=quivfac,col=col)
         else:
             print("mode must be 2D or 3D")
 
