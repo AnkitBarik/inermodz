@@ -22,7 +22,9 @@ def get_grid2D(theta,phi):
     return p2D, th2D
 
 
-def radContour(theta,phi,data,grid,levels,cm,proj):
+def radContour(theta,phi,data,idxPlot,grid,levels,cm,proj):
+
+    data = data[...,idxPlot]
 
     p2D,th2D = get_grid2D(theta,phi)
 
@@ -83,6 +85,7 @@ def merContour(r,theta,data,levels,cm):
     plt.figure(figsize=(5,10))
 
     datMax = (np.abs(data)).max()
+    print(datMax)
     divnorm = colors.TwoSlopeNorm(vmin=-datMax, vcenter=0, vmax=datMax)
 
     cont = plt.contourf(xx,yy,data,levels,cmap=cm,norm=divnorm)
@@ -121,14 +124,17 @@ def eqContour(r,phi,data,levels,cm):
     plt.axis('off')
     plt.tight_layout()
 
-def surface3D(x,y,z,idx,ux,uy,uz,dat,cm='RdBu',quiv=True,fac=0.01):
+def surface3D(x,y,z,idx,ux,uy,uz,dat,cm='RdBu',quiv=True,fac=0.01,col=True):
 
     from mayavi import mlab
-
-    col = (0.43,0.43,0.43)
+   
+    if col: 
+        col = (0.43,0.43,0.43)
+    else:
+        col = None
     mlab.figure(size=(800,800))
     mesh_handle = mlab.mesh(x[...,idx],y[...,idx],z[...,idx],scalars=dat[...,idx],colormap=cm)
     mesh_handle.module_manager.scalar_lut_manager.reverse_lut = True
     if quiv:
         mlab.quiver3d(x,y,z,ux,uy,uz,color=col,scale_mode='vector',mode='arrow',mask_points=4,scale_factor=fac)
-    mlab.show()
+    #mlab.show()

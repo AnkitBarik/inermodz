@@ -22,7 +22,7 @@ class inerMod:
         self.omega = self.sig_arr[n-1]*2
 
 
-    def surf(self,field='us',r=0.5,cm='RdBu_r',levels=60,grid=False,mode="2D",proj="ortho",quivfac=0.01):
+    def surf(self,field='us',r=0.5,cm='RdBu_r',levels=60,grid=False,mode="2D",proj="ortho",quivfac=0.01,col=True):
 
         idxPlot = _find_rad(self.grid.r,r)
 
@@ -38,10 +38,10 @@ class inerMod:
             data = self.U.Uz
 
         if mode == "2D":
-            radContour(self.grid.theta,self.grid.phi,data,grid,levels,cm,proj)
+            radContour(self.grid.theta,self.grid.phi,data,idxPlot,grid,levels,cm,proj)
         elif mode == "3D":
             surface3D(self.grid.x3D,self.grid.y3D,self.grid.z3D,idxPlot,
-                      self.U.Ux,self.U.Uy,self.U.Uz,data,cm='RdBu',quiv=True,fac=quivfac)
+                      self.U.Ux,self.U.Uy,self.U.Uz,data,cm='RdBu',quiv=True,fac=quivfac,col=col)
         else:
             print("mode must be 2D or 3D")
 
