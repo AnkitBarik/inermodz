@@ -13,16 +13,16 @@ class vel:
         n = n-1   # The definition of n starts from 1 :(
 #        N = (l - m - ((l-m)%2))/2
 
-        self.grid = grid(nr=nr,nphi=nphi,ntheta=ntheta)
-        self.Us = np.zeros([nphi,ntheta,nr])
-        self.Up = np.zeros([nphi,ntheta,nr])
-        self.Uz = np.zeros([nphi,ntheta,nr])
+        self.grid = grid(nr=nr, nphi=nphi, ntheta=ntheta)
+        self.Us = np.zeros([nphi, ntheta, nr])
+        self.Up = np.zeros([nphi, ntheta, nr])
+        self.Uz = np.zeros([nphi, ntheta, nr])
 
-        sig_arr,N = sigma(m=m,N=N,l=l,symm=symm)
-        print('omega =',sig_arr*2)
+        sig_arr, N = sigma(m=m, N=N, l=l, symm=symm)
+        print(('omega =', sig_arr*2))
         sig = sig_arr[n]
 
-        print('omega(%d,%d,%d) = %.4f' %(l,m,n+1,sig*2))
+        print(('omega(%d,%d,%d) = %.4f' %(l, m, n+1, sig*2)))
 
 
         if l is not None:

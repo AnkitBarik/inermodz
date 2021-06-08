@@ -13,19 +13,19 @@ class grid:
         self.ntheta= ntheta
         self.nphi  = nphi
 
-        self.r     = np.linspace(ri,ro,nr)
-        self.phi   = np.linspace(0.,2*np.pi,nphi)
-        self.theta = np.linspace(0.,np.pi,ntheta)
+        self.r     = np.linspace(ri, ro, nr)
+        self.phi   = np.linspace(0., 2*np.pi, nphi)
+        self.theta = np.linspace(0., np.pi, ntheta)
 
-        self.r3D   = np.zeros([nphi,ntheta,nr])
-        self.th3D  = np.zeros([nphi,ntheta,nr])
-        self.phi3D = np.zeros([nphi,ntheta,nr])
+        self.r3D   = np.zeros([nphi, ntheta, nr])
+        self.th3D  = np.zeros([nphi, ntheta, nr])
+        self.phi3D = np.zeros([nphi, ntheta, nr])
 
         for i in range(nr):
-            self.r3D[:,:,i] = self.r[i]
+            self.r3D[:,:, i] = self.r[i]
 
         for j in range(ntheta):
-            self.th3D[:,j,:] = self.theta[j]
+            self.th3D[:, j,:] = self.theta[j]
 
         for k in range(nphi):
             self.phi3D[k,:,:] = self.phi[k]

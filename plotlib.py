@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 import matplotlib.colors as colors
 
-def get_grid2D(theta,phi):
+def get_grid2D(theta, phi):
 
     nphi  = len(phi)
     ntheta = len(theta)
@@ -17,16 +17,16 @@ def get_grid2D(theta,phi):
         p2D[i,:] = phi[i]
 
     for j in range(ntheta):
-        th2D[:,j] = theta[j]
+        th2D[:, j] = theta[j]
 
     return p2D, th2D
 
 
-def radContour(theta,phi,data,idxPlot,grid,levels,cm,proj):
+def radContour(theta, phi, data, idxPlot, grid, levels, cm, proj):
 
-    data = data[...,idxPlot]
+    data = data[..., idxPlot]
 
-    p2D,th2D = get_grid2D(theta,phi)
+    p2D, th2D = get_grid2D(theta, phi)
 
     p2D = p2D - np.pi
     th2D= np.pi/2 - th2D
@@ -35,10 +35,10 @@ def radContour(theta,phi,data,idxPlot,grid,levels,cm,proj):
     lat = th2D * 180./np.pi
 
     if proj == "ortho":
-        fig = plt.figure(figsize=(10,10))
+        fig = plt.figure(figsize=(10, 10))
         plotcrs = ccrs.Orthographic(0, 40)
     elif proj == "moll":
-        fig = plt.figure(figsize=(12,10))
+        fig = plt.figure(figsize=(12, 10))
         plotcrs = ccrs.Mollweide()
 
     ax = fig.add_subplot(1, 1, 1, projection=plotcrs)
@@ -50,12 +50,12 @@ def radContour(theta,phi,data,idxPlot,grid,levels,cm,proj):
         ax.gridlines(linewidth=1, color='gray', alpha=0.5, linestyle=':')
 
     if proj == "ortho":
-        cont = ax.pcolormesh(lon,lat,data, \
-                           transform=ccrs.PlateCarree(),cmap=cm, \
+        cont = ax.pcolormesh(lon, lat, data, \
+                           transform=ccrs.PlateCarree(), cmap=cm, \
                            norm=divnorm)
     elif proj == "moll":
-        cont = ax.contourf(lon,lat,data,levels, \
-                           transform=ccrs.PlateCarree(),cmap=cm, \
+        cont = ax.contourf(lon, lat, data, levels, \
+                           transform=ccrs.PlateCarree(), cmap=cm, \
                            norm=divnorm)
 
 
@@ -75,24 +75,24 @@ def radContour(theta,phi,data,idxPlot,grid,levels,cm,proj):
     plt.axis('off')
     plt.tight_layout()
 
-def merContour(r,theta,data,levels,cm):
+def merContour(r, theta, data, levels, cm):
 
-    rr,tth = np.meshgrid(r,theta)
+    rr, tth = np.meshgrid(r, theta)
 
     xx = rr*np.sin(tth)
     yy = rr*np.cos(tth)
 
-    plt.figure(figsize=(5,10))
+    plt.figure(figsize=(5, 10))
 
     datMax = (np.abs(data)).max()
     divnorm = colors.TwoSlopeNorm(vmin=-datMax, vcenter=0, vmax=datMax)
 
-    cont = plt.contourf(xx,yy,data,levels,cmap=cm,norm=divnorm)
+    cont = plt.contourf(xx, yy, data, levels, cmap=cm, norm=divnorm)
 
-    plt.plot(r[0]*np.sin(theta),r[0]*np.cos(theta),'k',lw=1)
-    plt.plot(r[-1]*np.sin(theta),r[-1]*np.cos(theta),'k',lw=1)
-    plt.plot([0,0], [ r.min(),r.max() ], 'k', lw=1)
-    plt.plot([0,0], [ -r.max(),-r.min() ], 'k', lw=1)
+    plt.plot(r[0]*np.sin(theta), r[0]*np.cos(theta), 'k', lw=1)
+    plt.plot(r[-1]*np.sin(theta), r[-1]*np.cos(theta), 'k', lw=1)
+    plt.plot([0, 0], [ r.min(), r.max() ], 'k', lw=1)
+    plt.plot([0, 0], [ -r.max(), -r.min() ], 'k', lw=1)
 
     for c in cont.collections:
         c.set_edgecolor("face")
@@ -101,20 +101,20 @@ def merContour(r,theta,data,levels,cm):
     plt.axis('off')
     plt.tight_layout()
 
-def eqContour(r,phi,data,levels,cm):
+def eqContour(r, phi, data, levels, cm):
 
-    phi2D, r2D = np.meshgrid(phi,r,indexing='ij')
+    phi2D, r2D = np.meshgrid(phi, r, indexing='ij')
     xx = r2D * np.cos(phi2D)
     yy = r2D * np.sin(phi2D)
 
-    plt.figure(figsize=(10,10))
+    plt.figure(figsize=(10, 10))
 
     datMax = (np.abs(data)).max()
     divnorm = colors.TwoSlopeNorm(vmin=-datMax, vcenter=0, vmax=datMax)
-    cont = plt.contourf(xx,yy,data,levels,cmap=cm,norm=divnorm)
+    cont = plt.contourf(xx, yy, data, levels, cmap=cm, norm=divnorm)
 
-    plt.plot(r[0]*np.cos(phi), r[0]*np.sin(phi),'k',lw=1)
-    plt.plot(r[-1]*np.cos(phi), r[-1]*np.sin(phi),'k',lw=1)
+    plt.plot(r[0]*np.cos(phi), r[0]*np.sin(phi), 'k', lw=1)
+    plt.plot(r[-1]*np.cos(phi), r[-1]*np.sin(phi), 'k', lw=1)
 
     for c in cont.collections:
         c.set_edgecolor("face")
@@ -130,14 +130,14 @@ def surface3D(x,y,z,idx,ux,uy,uz,dat,cm='seismic',quiv=True,fac=0.01,col=True):
     lut=eval('plt.cm.'+cm+'(np.linspace(0,1,255))*255')
    
     if col: 
-        col = (0.43,0.43,0.43)
+        col = (0.43, 0.43, 0.43)
     else:
         col = None
-    mlab.figure(size=(800,800))
-    mesh_handle = mlab.mesh(x[...,idx],y[...,idx],z[...,idx],scalars=dat[...,idx],colormap=cm)
+    mlab.figure(size=(800, 800))
+    mesh_handle = mlab.mesh(x[..., idx], y[..., idx], z[..., idx], scalars=dat[..., idx])
     mesh_handle.module_manager.scalar_lut_manager.lut.table = lut
 #    mesh_handle.module_manager.scalar_lut_manager.reverse_lut = True
     if quiv:
-        mlab.quiver3d(x,y,z,ux,uy,uz,color=col,scale_mode='vector',mode='arrow',mask_points=4,scale_factor=fac)
+        mlab.quiver3d(x, y, z, ux, uy, uz, color=col, scale_mode='vector', mode='arrow', mask_points=4, scale_factor=fac)
     #mlab.show()
     mlab.draw()
