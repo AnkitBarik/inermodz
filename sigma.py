@@ -6,13 +6,6 @@ from .libzhang import factorial
 
 def sigma(m=0,N=0,l=None,symm='es'):
 
-    if l is not None:
-        N = int(0.5 * (l - m - (l-m)%2))
-        if (l-m)%2 == 0:
-            symm = 'es'
-        else:
-            symm = 'ea'
-
     if symm == 'es' or symm == 'ES':
 
         p = np.zeros(2*N+1)
@@ -54,7 +47,7 @@ def sigma(m=0,N=0,l=None,symm='es'):
 
         sig = np.roots(p)
 
-    return sig, N
+    return sig
 
 def get_mode_sigma(om = 0.,m=2,Nmax=4,symm='es',info='lm'):
 
@@ -62,8 +55,8 @@ def get_mode_sigma(om = 0.,m=2,Nmax=4,symm='es',info='lm'):
     if (symm=='es' or symm=='ES'):
         for N in range(1, Nmax+1):
             l = 2*N + m
-            sig_test, N = sigma(m = m, N = N, symm=symm)
-            idx = argmin(abs(sig - sig_test))
+            sig_test = sigma(m = m, N = N, symm=symm)
+            idx = np.argmin(abs(sig - sig_test))
             if info == 'lm':
                 print(("(l,m) = (%d,%d)  om = %f" %(l, m, sig_test[idx]*2)))
             elif info == 'all':
@@ -71,8 +64,8 @@ def get_mode_sigma(om = 0.,m=2,Nmax=4,symm='es',info='lm'):
     elif (symm=='ea' or symm=='EA'):
         for N in range(Nmax+1):
             l = 2*N + m + 1
-            sig_test, N = sigma(m = m, N = N, symm=symm)
-            idx = argmin(abs(sig - sig_test))
+            sig_test = sigma(m = m, N = N, symm=symm)
+            idx = np.argmin(abs(sig - sig_test))
             if info == 'lm':
                 print(("(l,m) = (%d,%d)  om = %f" %(l, m, sig_test[idx]*2)))
             elif info == 'all':

@@ -13,32 +13,78 @@ class inerMod:
 
     def __init__(self,nr=33,nphi=256,ntheta=128,m=0,l=None,N=0,n=1,symm='es',norm=False):
 
-        self.sig_arr, self.N = sigma(m=m, l=l, N=N, symm=symm)
-        self.U = vel(m=m, l=l, N=N, n=n, nr=nr, nphi=nphi, ntheta=ntheta, symm=symm, norm=norm)
+        symm = symm.lower()
+
+        if l is not None:
+            N = int(0.5 * (l - m - (l-m)%2))
+
+            if (l-m)%2 == 0:
+                symm = 'es'
+            else:
+                symm = 'ea'
+        else:
+            if symm == 'es':
+                l = 2*N + m
+            elif symm == 'ea':
+                l = 2*N + m - 1
+
+        self.sig_arr = sigma(m=m, l=l, N=N, symm=symm)
         self.grid = grid(nr=nr, nphi=nphi, ntheta=ntheta)
+        self.U = vel(m=m, l=l, N=N, n=n, nr=nr, nphi=nphi,
+                     ntheta=ntheta, symm=symm, sigma = self.sig_arr[n-1],
+                     grid=self.grid,norm=norm)
         self.l = l
         self.m = m
         self.n = n
+        self.N = N
         self.omega = self.sig_arr[n-1]*2
 
+        print('omega =', 2*self.sig_arr)
+        print('omega(%d,%d,%d) = %.5f' %(l, m, n, self.omega))
 
-    def surf(self,field='us',r=1,cm='RdBu_r',levels=60,grid=False,mode="2D",proj="ortho",quivfac=0.01,col=True):
 
-        idxPlot = _find_rad(self.grid.r, r)
+    def get_data(self,field):
 
         field = field.lower()
 
-        if field == 'us':
+        if field in ['us','vs']:
             data = self.U.Us
-
-        if field == 'up':
+            titl = r'$u_s$'
+        elif field in ['up','uphi','vp','vphi']:
             data = self.U.Up
-
-        if field == 'uz':
+            titl = r'$u_\phi$'
+        elif field == ['uz','vz']:
             data = self.U.Uz
+            titl = r'$u_z$'
+        elif field == ['ur','vr']:
+            data = self.U.Ur
+            titl = r'$u_r$'
+        elif field in ['ut','utheta','vt','vtheta']:
+            data = self.U.Utheta
+            titl = r'$u_\theta$'
+        elif field in ['ke','energy']:
+            data = 0.5 * (self.U.Us**2 + self.U.Up**2 + self.U.Uz**2)
+            titl = r'$E_{kin}$'
+
+        return data, titl
+
+
+    def surf(self,field='us',r=1,cm='RdBu_r',levels=60,grid=False,
+             mode="2D",proj="ortho",quivfac=0.01,col=True,l_titl=True):
+
+        idxPlot = _find_rad(self.grid.r, r)
+
+        data, titl = self.get_data(field)
+        data = data[...,idxPlot]
 
         if mode == "2D":
-            radContour(self.grid.theta, self.grid.phi, data, idxPlot, grid, levels, cm, proj)
+            if l_titl:
+                titl = titl + r' at $r/r_o = %.2f$' %(self.grid.r[idxPlot]/self.grid.r[-1])
+            else:
+                titl = None
+
+            radContour(self.grid.theta, self.grid.phi, data, grid, levels, cm, proj, titl)
+
         elif mode == "3D":
             surface3D(self.grid.x3D, self.grid.y3D, self.grid.z3D, idxPlot,
                       self.U.Ux, self.U.Uy, self.U.Uz, data, cm=cm, quiv=True, fac=quivfac, col=col)
@@ -47,38 +93,35 @@ class inerMod:
 
         plt.show()
 
-    def slice(self, field='us',phi=0,cm='RdBu_r',levels=100):
+    def slice(self, field='us',phi=0,cm='RdBu_r',levels=100,l_titl=True):
 
         idxPlot = _find_phi(self.grid.phi, phi)
 
         field = field.lower()
 
-        if field == 'us':
-            data = self.U.Us[idxPlot,:,:]
+        data, titl = self.get_data(field)
+        data = data[idxPlot,...]
 
-        if field == 'up':
-            data = self.U.Up[idxPlot,:,:]
+        if l_titl:
+            titl = titl + r' at $\phi=%.1f^\circ$' %(self.grid.phi[idxPlot] * 180/np.pi)
+        else:
+            titl = None
 
-        if field == 'uz':
-            data = self.U.Uz[idxPlot,:,:]
-
-        merContour(self.grid.r, self.grid.theta, data, levels, cm)
+        merContour(self.grid.r, self.grid.theta, data, levels, cm, titl)
         plt.show()
 
-    def equat(self, field='us',cm='seismic',levels=60):
+    def equat(self, field='us',cm='RdBu_r',levels=60,l_title=True):
 
         field = field.lower()
 
         half = int(self.grid.ntheta/2)
+        data, titl = self.get_data(field)
+        data = data[:,half,:]
 
-        if field == 'us':
-            data = self.U.Us[:, half,:]
+        if l_title:
+            titl = titl + ' at equator'
+        else:
+            titl = None
 
-        if field == 'up':
-            data = self.U.Up[:, half,:]
-
-        if field == 'uz':
-            data = self.U.Uz[:, half,:]
-
-        eqContour(self.grid.r, self.grid.phi, data, levels, cm)
+        eqContour(self.grid.r, self.grid.phi, data, levels, cm, titl)
         plt.show()

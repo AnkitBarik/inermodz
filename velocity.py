@@ -4,34 +4,34 @@
 import numpy as np
 from .sigma import sigma
 from .libzhang import *
-from .grid import grid
 
 class vel:
 
-    def __init__(self,m=0,N=0,n=1,l=None,nr=33,nphi=256,ntheta=128,symm='es',norm=False):
+    def __init__(self,m=0,N=0,n=1,l=None,nr=33,nphi=256,ntheta=128,symm='es',
+                 sigma=None,grid=None,norm=False):
 
         n = n-1   # The definition of n starts from 1 :(
 #        N = (l - m - ((l-m)%2))/2
+        if grid is None:
+            from .grid import grid
+            self.grid = grid(nr=nr, nphi=nphi, ntheta=ntheta)
+        else:
+            self.grid = grid
 
-        self.grid = grid(nr=nr, nphi=nphi, ntheta=ntheta)
         self.Us = np.zeros([nphi, ntheta, nr])
         self.Up = np.zeros([nphi, ntheta, nr])
         self.Uz = np.zeros([nphi, ntheta, nr])
 
-        sig_arr, N = sigma(m=m, N=N, l=l, symm=symm)
-        print(('omega =', sig_arr*2))
-        sig = sig_arr[n]
+        if sigma is None:
+            sig_arr = sigma(m=m, N=N, l=l, symm=symm)
+            print('omega =', sig_arr*2)
+            sig = sig_arr[n]
 
-        print(('omega(%d,%d,%d) = %.4f' %(l, m, n+1, sig*2)))
+            print('omega(%d,%d,%d) = %.4f' %(l, m, n+1, sig*2))
+        else:
+            sig = sigma
 
-
-        if l is not None:
-            if (l-m)%2 == 0:
-                symm = 'es'
-            else:
-                symm = 'ea'
-
-        if (symm == 'es') or (symm == 'ES'):
+        if (symm == 'es'):
 
             for i in range(N+1):
                 for j in range(N-i+1):
@@ -61,11 +61,8 @@ class vel:
             self.Us = self.Us  * np.sin(m*self.grid.phi3D)
             self.Uz = -self.Uz * np.sin(m*self.grid.phi3D)
             self.Up = self.Up  * np.cos(m*self.grid.phi3D)
-            self.Ux = self.Us * np.cos(self.grid.phi3D) - self.Up * np.sin(self.grid.phi3D)
-            self.Uy = self.Us * np.sin(self.grid.phi3D) + self.Up * np.cos(self.grid.phi3D)
 
-
-        if (symm == 'ea') or (symm == 'EA'):
+        if (symm == 'ea'):
 
 
             for i in range(N+1):
@@ -98,10 +95,13 @@ class vel:
             self.Us = self.Us  * np.sin(m*self.grid.phi3D)
             self.Uz = -self.Uz * np.sin(m*self.grid.phi3D)
             self.Up = self.Up  * np.cos(m*self.grid.phi3D)
-            self.Ux = self.Us * np.cos(self.grid.phi3D) - self.Up * np.sin(self.grid.phi3D)
-            self.Uy = self.Us * np.sin(self.grid.phi3D) + self.Up * np.cos(self.grid.phi3D)
 
             del UTemp
+
+        self.Ux = self.Us * np.cos(self.grid.phi3D) - self.Up * np.sin(self.grid.phi3D)
+        self.Uy = self.Us * np.sin(self.grid.phi3D) + self.Up * np.cos(self.grid.phi3D)
+        self.Ur = self.Us * np.sin(self.grid.th3D) + self.Uz * np.cos(self.grid.th3D)
+        self.Utheta = self.Us * np.cos(self.grid.th3D) - self.Uz * np.sin(self.grid.th3D)
 
 
         if norm:

@@ -22,9 +22,7 @@ def get_grid2D(theta, phi):
     return p2D, th2D
 
 
-def radContour(theta, phi, data, idxPlot, grid, levels, cm, proj):
-
-    data = data[..., idxPlot]
+def radContour(theta, phi, data, grid, levels, cm, proj, titl=None):
 
     p2D, th2D = get_grid2D(theta, phi)
 
@@ -62,6 +60,8 @@ def radContour(theta, phi, data, idxPlot, grid, levels, cm, proj):
         for c in cont.collections:
             c.set_edgecolor("face")
 
+    if titl is not None:
+        ax.set_title(titl,fontsize=30)
 #        if vec:
 #            ut = self.U.Us*cos(self.grid.th3D) - self.U.Uz*sin(self.grid.th3D)
 #            ut = ut[::vecStride,::vecStride,idxPlot]
@@ -75,7 +75,7 @@ def radContour(theta, phi, data, idxPlot, grid, levels, cm, proj):
     plt.axis('off')
     plt.tight_layout()
 
-def merContour(r, theta, data, levels, cm):
+def merContour(r, theta, data, levels, cm, titl=None):
 
     rr, tth = np.meshgrid(r, theta)
 
@@ -97,11 +97,14 @@ def merContour(r, theta, data, levels, cm):
     for c in cont.collections:
         c.set_edgecolor("face")
 
+    if titl is not None:
+        plt.title(titl,fontsize=20)
+
     plt.axis('equal')
     plt.axis('off')
     plt.tight_layout()
 
-def eqContour(r, phi, data, levels, cm):
+def eqContour(r, phi, data, levels, cm, titl=None):
 
     phi2D, r2D = np.meshgrid(phi, r, indexing='ij')
     xx = r2D * np.cos(phi2D)
@@ -119,6 +122,9 @@ def eqContour(r, phi, data, levels, cm):
     for c in cont.collections:
         c.set_edgecolor("face")
 
+    if titl is not None:
+        plt.title(titl,fontsize=20)
+
     plt.axis('equal')
     plt.axis('off')
     plt.tight_layout()
@@ -128,8 +134,8 @@ def surface3D(x,y,z,idx,ux,uy,uz,dat,cm='seismic',quiv=True,fac=0.01,col=True):
     from mayavi import mlab
 
     lut=eval('plt.cm.'+cm+'(np.linspace(0,1,255))*255')
-   
-    if col: 
+
+    if col:
         col = (0.43, 0.43, 0.43)
     else:
         col = None
