@@ -8,7 +8,7 @@ class grid:
     def __init__(self,nr = 65, nphi = 512, ntheta = 256):
 
         ri = 0.; ro = 1;
-    
+
         self.nr    = nr
         self.ntheta= ntheta
         self.nphi  = nphi
@@ -21,11 +21,14 @@ class grid:
         self.th3D  = np.zeros([nphi, ntheta, nr])
         self.phi3D = np.zeros([nphi, ntheta, nr])
 
+        self.th2D  = np.zeros([ntheta,nr]) # For integration
+
         for i in range(nr):
             self.r3D[:,:, i] = self.r[i]
 
         for j in range(ntheta):
             self.th3D[:, j,:] = self.theta[j]
+            self.th2D[j,:]    = self.theta[j]
 
         for k in range(nphi):
             self.phi3D[k,:,:] = self.phi[k]

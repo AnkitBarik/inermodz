@@ -32,12 +32,13 @@ def radContour(theta, phi, data, grid, levels, cm, proj, titl=None):
     lon = p2D * 180./np.pi
     lat = th2D * 180./np.pi
 
-    if proj == "ortho":
+    fig = plt.figure(figsize=(12,6.75))
+
+    if proj == 'Orthographic':
         fig = plt.figure(figsize=(10, 10))
         plotcrs = ccrs.Orthographic(0, 40)
-    elif proj == "moll":
-        fig = plt.figure(figsize=(12, 10))
-        plotcrs = ccrs.Mollweide()
+    else:
+        plotcrs = eval('ccrs.'+proj+'()')
 
     ax = fig.add_subplot(1, 1, 1, projection=plotcrs)
 
@@ -47,11 +48,11 @@ def radContour(theta, phi, data, grid, levels, cm, proj, titl=None):
     if grid:
         ax.gridlines(linewidth=1, color='gray', alpha=0.5, linestyle=':')
 
-    if proj == "ortho":
+    if proj == "Orthographic":
         cont = ax.pcolormesh(lon, lat, data, \
                            transform=ccrs.PlateCarree(), cmap=cm, \
                            norm=divnorm)
-    elif proj == "moll":
+    else:
         cont = ax.contourf(lon, lat, data, levels, \
                            transform=ccrs.PlateCarree(), cmap=cm, \
                            norm=divnorm)
@@ -140,7 +141,7 @@ def surface3D(x,y,z,idx,ux,uy,uz,dat,cm='seismic',quiv=True,fac=0.01,col=True):
     else:
         col = None
     mlab.figure(size=(800, 800))
-    mesh_handle = mlab.mesh(x[..., idx], y[..., idx], z[..., idx], scalars=dat[..., idx])
+    mesh_handle = mlab.mesh(x[..., idx], y[..., idx], z[..., idx], scalars=dat)
     mesh_handle.module_manager.scalar_lut_manager.lut.table = lut
 #    mesh_handle.module_manager.scalar_lut_manager.reverse_lut = True
     if quiv:

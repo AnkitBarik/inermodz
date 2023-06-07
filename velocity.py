@@ -107,7 +107,7 @@ class vel:
         if norm:
             U2 = self.Us**2 + self.Up**2 + self.Uz**2
             U2p = np.trapz(U2, x=self.grid.phi, axis=0)
-            U2t = np.trapz(U2p, self.grid.theta, axis=0)
+            U2t = np.trapz(U2p*np.sin(self.grid.th2D), self.grid.theta, axis=0)
             U2r = np.trapz(U2t, self.grid.r, axis=0)
             Vol = 4./3. * np.pi * (self.grid.r.max()**3 - self.grid.r.min()**3)
             U2r /= Vol
