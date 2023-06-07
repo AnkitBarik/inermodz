@@ -29,15 +29,16 @@ class inerMod:
                 l = 2*N + m - 1
 
         self.sig_arr = sigma(m=m, l=l, N=N, symm=symm)
-        self.grid = grid(nr=nr, nphi=nphi, ntheta=ntheta)
-        self.U = vel(m=m, l=l, N=N, n=n, nr=nr, nphi=nphi,
-                     ntheta=ntheta, symm=symm, sigma = self.sig_arr[n-1],
-                     grid=self.grid,norm=norm)
-        self.l = l
-        self.m = m
-        self.n = n
-        self.N = N
+        self.grid    = grid(nr=nr, nphi=nphi, ntheta=ntheta)
+        self.U       = vel(m=m, l=l, N=N, n=n, nr=nr, nphi=nphi,
+                           ntheta=ntheta, symm=symm, sigma = self.sig_arr[n-1],
+                           grid=self.grid,norm=norm)
+        self.l     = l
+        self.m     = m
+        self.n     = n
+        self.N     = N
         self.omega = self.sig_arr[n-1]*2
+        self.symm  = symm
 
         print('omega =', 2*self.sig_arr)
         print('omega(%d,%d,%d) = %.5f' %(l, m, n, self.omega))
@@ -70,7 +71,7 @@ class inerMod:
 
 
     def surf(self,field='us',r=1,cm='RdBu_r',levels=60,grid=False,
-             mode="2D",proj="ortho",quivfac=0.01,col=True,l_titl=True):
+             mode="2D",proj="Mollweide",quivfac=0.01,col=True,l_titl=True):
 
         idxPlot = _find_rad(self.grid.r, r)
 
