@@ -1,4 +1,6 @@
 # InerModZ
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
 Python routines to compute and display inertial modes of a full sphere according to the analytical solution provided by Zhang et al. 2001, JFM.
 
 Requires the libraries [cartopy](https://scitools.org.uk/cartopy/docs/latest/) and [mayavi](https://docs.enthought.com/mayavi/mayavi/) for 2D map projections and 3D surface plots on constant radial surfaces.
