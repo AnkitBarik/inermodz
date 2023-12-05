@@ -22,7 +22,18 @@ def get_grid2D(theta, phi):
     return p2D, th2D
 
 
-def radContour(theta, phi, data, grid, levels, cm, proj, titl=None):
+def radContour(theta, phi, data, grid, levels, cm, proj, plotbg, titl=None):
+    if plotbg == 'dark':
+        plt.style.use("dark_background")
+        plt.rcParams.update({
+            "axes.facecolor"   : "#1b1b1b",
+            "figure.facecolor" : "#1b1b1b",
+            "figure.edgecolor" : "#1b1b1b",
+            "savefig.facecolor": "#1b1b1b",
+            "savefig.edgecolor": "#1b1b1b"})
+        lc = 'w'
+    elif plotbg == 'light':
+        lc = 'k'
 
     p2D, th2D = get_grid2D(theta, phi)
 
@@ -76,8 +87,18 @@ def radContour(theta, phi, data, grid, levels, cm, proj, titl=None):
     plt.axis('off')
     plt.tight_layout()
 
-def merContour(r, theta, data, levels, cm, titl=None):
-
+def merContour(r, theta, data, levels, cm, plotbg, titl=None):
+    if plotbg == 'dark':
+        plt.style.use("dark_background")
+        plt.rcParams.update({
+            "axes.facecolor"   : "#1b1b1b",
+            "figure.facecolor" : "#1b1b1b",
+            "figure.edgecolor" : "#1b1b1b",
+            "savefig.facecolor": "#1b1b1b",
+            "savefig.edgecolor": "#1b1b1b"})
+        lc = 'w'
+    elif plotbg == 'light':
+        lc = 'k'
     rr, tth = np.meshgrid(r, theta)
 
     xx = rr*np.sin(tth)
@@ -90,10 +111,10 @@ def merContour(r, theta, data, levels, cm, titl=None):
 
     cont = plt.contourf(xx, yy, data, levels, cmap=cm, norm=divnorm)
 
-    plt.plot(r[0]*np.sin(theta), r[0]*np.cos(theta), 'k', lw=1)
-    plt.plot(r[-1]*np.sin(theta), r[-1]*np.cos(theta), 'k', lw=1)
-    plt.plot([0, 0], [ r.min(), r.max() ], 'k', lw=1)
-    plt.plot([0, 0], [ -r.max(), -r.min() ], 'k', lw=1)
+    plt.plot(r[0]*np.sin(theta), r[0]*np.cos(theta), lc, lw=1)
+    plt.plot(r[-1]*np.sin(theta), r[-1]*np.cos(theta), lc, lw=1)
+    plt.plot([0, 0], [ r.min(), r.max() ], lc, lw=1)
+    plt.plot([0, 0], [ -r.max(), -r.min() ], lc, lw=1)
 
     for c in cont.collections:
         c.set_edgecolor("face")
@@ -105,8 +126,18 @@ def merContour(r, theta, data, levels, cm, titl=None):
     plt.axis('off')
     plt.tight_layout()
 
-def eqContour(r, phi, data, levels, cm, titl=None):
-
+def eqContour(r, phi, data, levels, cm, plotbg, titl=None):
+    if plotbg == 'dark':
+        plt.style.use("dark_background")
+        plt.rcParams.update({
+            "axes.facecolor"   : "#1b1b1b",
+            "figure.facecolor" : "#1b1b1b",
+            "figure.edgecolor" : "#1b1b1b",
+            "savefig.facecolor": "#1b1b1b",
+            "savefig.edgecolor": "#1b1b1b"})
+        lc = 'w'
+    elif plotbg == 'light':
+        lc = 'k'
     phi2D, r2D = np.meshgrid(phi, r, indexing='ij')
     xx = r2D * np.cos(phi2D)
     yy = r2D * np.sin(phi2D)
@@ -117,8 +148,8 @@ def eqContour(r, phi, data, levels, cm, titl=None):
     divnorm = colors.TwoSlopeNorm(vmin=-datMax, vcenter=0, vmax=datMax)
     cont = plt.contourf(xx, yy, data, levels, cmap=cm, norm=divnorm)
 
-    plt.plot(r[0]*np.cos(phi), r[0]*np.sin(phi), 'k', lw=1)
-    plt.plot(r[-1]*np.cos(phi), r[-1]*np.sin(phi), 'k', lw=1)
+    plt.plot(r[0]*np.cos(phi), r[0]*np.sin(phi), lc, lw=1)
+    plt.plot(r[-1]*np.cos(phi), r[-1]*np.sin(phi), lc, lw=1)
 
     for c in cont.collections:
         c.set_edgecolor("face")
@@ -145,6 +176,7 @@ def surface3D(x,y,z,idx,ux,uy,uz,dat,cm='seismic',quiv=True,fac=0.01,col=True):
     mesh_handle.module_manager.scalar_lut_manager.lut.table = lut
 #    mesh_handle.module_manager.scalar_lut_manager.reverse_lut = True
     if quiv:
-        mlab.quiver3d(x, y, z, ux, uy, uz, color=col, scale_mode='vector', mode='arrow', mask_points=4, scale_factor=fac)
+        mlab.quiver3d(x, y, z, ux, uy, uz, color=col, scale_mode='vector',
+                      mode='arrow', mask_points=4, scale_factor=fac)
     #mlab.show()
     mlab.draw()

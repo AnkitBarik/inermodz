@@ -11,7 +11,7 @@ from .plotlib import *
 
 class inerMod:
 
-    def __init__(self,nr=33,nphi=256,ntheta=128,m=0,l=None,N=0,n=1,symm='es',norm=False):
+    def __init__(self,nr=33,nphi=256,ntheta=128,m=0,l=None,N=0,n=1,symm='es',norm=False,plotbg='light'):
 
         symm = symm.lower()
 
@@ -39,6 +39,7 @@ class inerMod:
         self.N     = N
         self.omega = self.sig_arr[n-1]*2
         self.symm  = symm
+        self.plotbg= plotbg
 
         print('omega =', 2*self.sig_arr)
         print('omega(%d,%d,%d) = %.5f' %(l, m, n, self.omega))
@@ -84,7 +85,8 @@ class inerMod:
             else:
                 titl = None
 
-            radContour(self.grid.theta, self.grid.phi, data, grid, levels, cm, proj, titl)
+            radContour(self.grid.theta, self.grid.phi, data, grid, levels, cm,
+                       proj,  self.plotbg, titl)
 
         elif mode == "3D":
             surface3D(self.grid.x3D, self.grid.y3D, self.grid.z3D, idxPlot,
@@ -108,7 +110,7 @@ class inerMod:
         else:
             titl = None
 
-        merContour(self.grid.r, self.grid.theta, data, levels, cm, titl)
+        merContour(self.grid.r, self.grid.theta, data, levels, cm,  self.plotbg, titl)
         plt.show()
 
     def equat(self, field='us',cm='RdBu_r',levels=60,l_title=True):
@@ -124,5 +126,5 @@ class inerMod:
         else:
             titl = None
 
-        eqContour(self.grid.r, self.grid.phi, data, levels, cm, titl)
+        eqContour(self.grid.r, self.grid.phi, data, levels, cm,  self.plotbg, titl)
         plt.show()
