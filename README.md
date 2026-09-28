@@ -14,3 +14,7 @@ Requires the libraries [cartopy](https://scitools.org.uk/cartopy/docs/latest/) a
 * ```grid``` : This provides access to the grid variables (r,\theta,\phi), including 3D ones.
 
 * ```sigma```: This provides the half-frequencies for a single mode defined by (`l`,`m`,`N`).
+
+## Tests
+
+Run the test suite with `pytest` from the repository root. It checks the frequencies against the values in Zhang et al. (2001) (figures 1, 2 and table 1), verifies that the velocity fields satisfy the governing equations, boundary condition and equatorial symmetries, and renders every plot off-screen. The 3D plotting tests are skipped if pyvista is not installed.
