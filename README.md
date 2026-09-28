@@ -1,4 +1,5 @@
 # InerModZ
+[![Tests](https://github.com/AnkitBarik/inermodz/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/AnkitBarik/inermodz/actions/workflows/tests.yml)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 Python routines to compute and display inertial modes of a full sphere according to the analytical solution provided by Zhang et al. 2001, JFM.
