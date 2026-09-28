@@ -2,7 +2,7 @@
 # -*- coding: iso-8859-15 -*-
 
 import numpy as np
-from .sigma import sigma
+from .sigma import sigma as sigma_roots
 from .libzhang import *
 
 class vel:
@@ -23,10 +23,12 @@ class vel:
         self.Uz = np.zeros([nphi, ntheta, nr])
 
         if sigma is None:
-            sig_arr = sigma(m=m, N=N, l=l, symm=symm)
+            sig_arr = sigma_roots(m=m, N=N, l=l, symm=symm)
             print('omega =', sig_arr*2)
             sig = sig_arr[n]
 
+            if l is None:
+                l = 2*N + m + (1 if symm == 'ea' else 0)
             print('omega(%d,%d,%d) = %.4f' %(l, m, n+1, sig*2))
         else:
             sig = sigma
@@ -74,7 +76,7 @@ class vel:
                         * factorial(i) * factorial(j) * factorial(m+j) )
 
                     UTemp = C * sig**(2*i-1) * ( 1 - sig**2)**j * (2*i+1) * \
-                            self.grid.s3D**(m+2*j) * self.grid.z3D**(2*j)
+                            self.grid.s3D**(m+2*j) * self.grid.z3D**(2*i)
 
                     self.Uz = self.Uz + UTemp
 
@@ -98,20 +100,19 @@ class vel:
 
             del UTemp
 
-        self.Ux = self.Us * np.cos(self.grid.phi3D) - self.Up * np.sin(self.grid.phi3D)
-        self.Uy = self.Us * np.sin(self.grid.phi3D) + self.Up * np.cos(self.grid.phi3D)
-        self.Ur = self.Us * np.sin(self.grid.th3D) + self.Uz * np.cos(self.grid.th3D)
-        self.Utheta = self.Us * np.cos(self.grid.th3D) - self.Uz * np.sin(self.grid.th3D)
-
-
         if norm:
             U2 = self.Us**2 + self.Up**2 + self.Uz**2
-            U2p = np.trapz(U2, x=self.grid.phi, axis=0)
-            U2t = np.trapz(U2p*np.sin(self.grid.th2D), self.grid.theta, axis=0)
-            U2r = np.trapz(U2t, self.grid.r, axis=0)
+            U2p = np.trapezoid(U2, x=self.grid.phi, axis=0)
+            U2t = np.trapezoid(U2p*np.sin(self.grid.th2D), self.grid.theta, axis=0)
+            U2r = np.trapezoid(U2t*self.grid.r**2, self.grid.r, axis=0)
             Vol = 4./3. * np.pi * (self.grid.r.max()**3 - self.grid.r.min()**3)
             U2r /= Vol
 
             self.Us /= np.sqrt(U2r)
             self.Up /= np.sqrt(U2r)
             self.Uz /= np.sqrt(U2r)
+
+        self.Ux = self.Us * np.cos(self.grid.phi3D) - self.Up * np.sin(self.grid.phi3D)
+        self.Uy = self.Us * np.sin(self.grid.phi3D) + self.Up * np.cos(self.grid.phi3D)
+        self.Ur = self.Us * np.sin(self.grid.th3D) + self.Uz * np.cos(self.grid.th3D)
+        self.Utheta = self.Us * np.cos(self.grid.th3D) - self.Uz * np.sin(self.grid.th3D)

@@ -1,25 +1,21 @@
 #!/usr/bin/env python3
 # -*- coding: iso-8859-15 -*-
 
+import math
 import numpy as np
+
+# Exact integer arithmetic: float32/int64 overflow for moderately large m, N
 
 def factorial(n):
 
-    if (n==0) or (n==1):
-        fac = 1.
-    else:
-        fac = np.float32(np.product(list(range(1, n+1))))
-
-    return fac
+    return math.factorial(n)
 
 def dfactorial(n):
 
-    if (n==0) or (n==1):
-        fac = 1.
-    else:
-        fac = np.float32(np.product(list(range(2 - n%2, n+1, 2))))
+    if n <= 0:
+        return 1   # includes (-1)!! = 1
 
-    return fac
+    return math.prod(range(n, 0, -2))
 
 def _find_rad(r, rPlot):
 #                rPlot /= (1-self.radratio)

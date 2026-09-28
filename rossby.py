@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import shtns
 import sys
-from mayavi import mlab
+import pyvista as pv
 
 def get_grid(theta, phi):
    
@@ -57,17 +57,21 @@ ux, uy, uz = get_cart(utheta, uphi, th2D, p2D)
 
 col = (0.43, 0.43, 0.43)
 
-lut = plt.cm.RdBu_r(np.linspace(0, 1, 255))*255
+surf = pv.StructuredGrid(x, y, z)
+surf.point_data['psi'] = psi.ravel(order='F')
 
-mlab.figure(size=(800, 800))
+stride = 4
+pts = np.column_stack([x[::stride, ::stride].ravel(), y[::stride, ::stride].ravel(),
+                       z[::stride, ::stride].ravel()])
+vec = np.column_stack([ux[::stride, ::stride].ravel(), uy[::stride, ::stride].ravel(),
+                       uz[::stride, ::stride].ravel()])
+cloud = pv.PolyData(pts)
+cloud.point_data['vec'] = vec / np.linalg.norm(vec, axis=1).max()
 
-mesh_handle = mlab.mesh(x, y, z, scalars=psi)
+psiMax = np.abs(psi).max()
 
-mesh_handle.module_manager.scalar_lut_manager.lut.table = lut
-
-mlab.quiver3d(x, y, z, ux, uy, uz, color=col, scale_mode='vector', mode='arrow',\
-             mask_points=4, scale_factor=0.05)
-
-mlab.draw()
-
-mlab.show()
+pl = pv.Plotter(window_size=(800, 800))
+pl.add_mesh(surf, scalars='psi', cmap='RdBu_r', clim=[-psiMax, psiMax],
+            smooth_shading=True)
+pl.add_mesh(cloud.glyph(orient='vec', scale='vec', factor=0.1), color=col)
+pl.show()
