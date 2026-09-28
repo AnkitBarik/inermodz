@@ -1,11 +1,7 @@
 import os
-import sys
 
 import numpy as np
 import pytest
-
-# The repository root is the package itself, so put its parent on the path
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 # Non-interactive backends so plotting tests never open windows
 os.environ.setdefault('MPLBACKEND', 'Agg')
