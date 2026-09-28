@@ -3,7 +3,7 @@
 
 Python routines to compute and display inertial modes of a full sphere according to the analytical solution provided by Zhang et al. 2001, JFM.
 
-Requires the libraries [cartopy](https://scitools.org.uk/cartopy/docs/latest/) and [pyvista](https://docs.pyvista.org/) for 2D map projections and 3D plots (surfaces of constant radius and isosurfaces).
+Requires the libraries [cartopy](https://scitools.org.uk/cartopy/docs/latest/) and [pyvista](https://docs.pyvista.org/) for 2D map projections and 3D plots (surfaces of constant radius and isosurfaces). Install all dependencies with `pip install -r requirements.txt`.
 
 ## Classes
 
